@@ -1,3 +1,3 @@
 # react-grid-select
 
-WIP
+WIP grid selection component
