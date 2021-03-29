@@ -1,4 +1,4 @@
-name: npm
+name: Pages
 
 on: push
 
@@ -12,10 +12,10 @@ jobs:
           node-version: 12
       - name: Build
         run: |
-          npm install
-          npm run build    
+          npm ci
+          npm run build-storybook
       - name: Deploy to pages branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./storybook-static

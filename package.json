@@ -14,7 +14,8 @@
   "scripts": {
     "build": "rollup -c",
     "test": "jest --watchAll=false",
-    "start": "start-storybook -p 6006 -s public"
+    "start": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
