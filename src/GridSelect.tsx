@@ -1,62 +1,40 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import clsx from "clsx";
 import { MouseEventHandler, useEffect, useState } from "react";
-import "./style.css";
-
-type CellProperties = {
-  coords: any;
-  activeCell: any;
-  hoverCell: any;
-  onClick: MouseEventHandler<HTMLDivElement>;
-  onMouseEnter: MouseEventHandler<HTMLDivElement>;
-};
-
-const Cell = ({
-  coords,
-  activeCell,
-  onClick,
-  hoverCell,
-  onMouseEnter,
-}: CellProperties) => {
-  const isActive = () => {
-    if (coords.x <= activeCell.x && coords.y <= activeCell.y) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const isHover = () => {
-    if (hoverCell && coords.x <= hoverCell.x && coords.y <= hoverCell.y) {
-      return true;
-    }
-
-    return false;
-  };
-
-  return (
-    <div
-      className={clsx("cell", {
-        active: isActive(),
-        hoverCell: isHover(),
-      })}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-    />
-  );
-};
+import { GridCell } from "./GridCell";
+import { createUseStyles } from 'react-jss';
 
 type RegionSelectionProperties = {
   rows?: number;
   cols?: number;
+  gridGap: number;
   onRegionUpdate: Function;
+  classes?: {
+    active?: any;
+    hover?: any;
+    cell?: any;
+    grid?: any;
+  };
 };
+
+const useStyles = createUseStyles({
+  grid: {
+    position: 'relative',
+    display: 'grid',
+    color: '#444',
+    margin: '24px 0 24px 0',
+  }
+})
 
 const GridSelect = ({
   onRegionUpdate,
   rows = 1,
   cols = 1,
+  gridGap = 5,
+  classes,
 }: RegionSelectionProperties) => {
+  const baseClasses = useStyles();
+
   const [activeCell, setActiveCell] = useState<any>({
     x: 0,
     y: 0,
@@ -68,18 +46,17 @@ const GridSelect = ({
       width: activeCell.x,
       height: activeCell.y,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCell]);
 
   // grid setting
   const gridCss = {
     gridTemplateColumns: Array(cols).fill("24px").join(" "),
-    gridGap: 5,
+    gridGap: gridGap,
   }
 
   return (
     <>
-      <div className="wrapper" style={gridCss} onMouseLeave={() => setHoverCell(null)}>
+      <div className={baseClasses.grid} style={gridCss} onMouseLeave={() => setHoverCell(null)}>
         {Array(cols*rows)
           .fill(0)
           .map((item, index) => {
@@ -88,13 +65,14 @@ const GridSelect = ({
               y: Math.floor(index / rows),
             };
             return (
-              <Cell
+              <GridCell
                 coords={coords}
                 key={index}
                 onClick={() => setActiveCell(coords)}
                 onMouseEnter={() => setHoverCell(coords)}
                 activeCell={activeCell}
                 hoverCell={hoverCell}
+                classes={classes}
               />
             );
           })}

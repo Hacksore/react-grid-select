@@ -1,5 +1,4 @@
 .wrapper {
-  
   position: relative;
   display: grid;
   color: #444;
@@ -15,7 +14,7 @@
 }
 
 .activeCell {    
-  background: red !important;
+  /* background: red !important; */
 }
 
 .hoverCell {
