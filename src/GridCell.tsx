@@ -1,24 +1,21 @@
 import React, { CSSProperties } from "react";
-import clsx from "clsx";
 import { MouseEventHandler, useEffect, useState } from "react";
-import { createUseStyles } from 'react-jss';
 
-const useStyles = createUseStyles({
+const baseStyle = {
   cell: {
     width: 24,
     height: 24,
-    background: 'blue',
-    cursor: 'pointer',
+    background: "blue",
+    cursor: "pointer",
     borderRadius: 3,
-		border: "2px solid blue"
   },
   active: {
-    background: "green"
+    background: "green",
   },
   hover: {
-    borderColor: "black"
-  }
-})
+    borderColor: "black",
+  },
+};
 
 type CellProperties = {
   coords: any;
@@ -30,29 +27,40 @@ type CellProperties = {
 };
 
 export const GridCell = ({
-    coords,
-    activeCell,
-    onClick,
-    hoverCell,
-    onMouseEnter,
-    classes,
-  }: CellProperties) => {
-    const baseClasses = useStyles();
-    const isActive = coords.x <= activeCell.x && coords.y <= activeCell.y;
-    const isHover = hoverCell && coords.x <= hoverCell.x && coords.y <= hoverCell.y;
+  coords,
+  activeCell,
+  onClick,
+  hoverCell,
+  onMouseEnter,
+  classes,
+}: CellProperties) => {
+  const isActive = coords.x <= activeCell.x && coords.y <= activeCell.y;
+  const isHover =
+    hoverCell && coords.x <= hoverCell.x && coords.y <= hoverCell.y;
+  const [styles, setStyles] = useState<any>(baseStyle);
+  const [cellClass, setCellClass] = useState<any>();
 
-    return (
-      <div
-        className={clsx(baseClasses.cell, {
-					[classes.cell]: classes && classes.cell,
-          [baseClasses.active]: isActive,
-					[classes.active]: isActive && classes && classes.active,
-          [baseClasses.hover]: isHover,
-					[classes.hover]: isHover && classes && classes.hover,
-					// [classes.activeCell]: class.activeCell,
-        })}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-      />
-    );
-  };
+  useEffect(() => {
+    let style = {
+      ...baseStyle.cell,
+      ...classes?.cell,
+    };
+    if (isActive) {
+      style = {
+        ...style,
+        ...baseStyle.active,
+        ...classes?.active,
+      };
+    }
+    if (isHover) {
+      style = {
+        ...style,
+        ...baseStyle.hover,
+        ...classes?.hover,
+      };
+    }
+    setStyles(style);
+  }, [isActive, isHover]);
+
+  return <div style={styles} onClick={onClick} onMouseEnter={onMouseEnter} />;
+};

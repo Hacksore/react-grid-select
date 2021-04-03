@@ -1,13 +1,12 @@
-import React, { CSSProperties } from "react";
-import clsx from "clsx";
-import { MouseEventHandler, useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { GridCell } from "./GridCell";
 import { createUseStyles } from 'react-jss';
 
 type RegionSelectionProperties = {
   rows?: number;
   cols?: number;
-  gridGap: number;
+  gridGap?: number;
   onRegionUpdate: Function;
   classes?: {
     active?: any;

@@ -1,25 +1,28 @@
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import typescript from "rollup-plugin-typescript2";
-import css from "rollup-plugin-import-css";
-
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import packageJson from "./package.json";
 
+const external = [
+  ...Object.keys(packageJson.dependencies || {}),
+  ...Object.keys(packageJson.peerDependencies || {}),
+];
+
 export default {
-  input: "./src/GridSelect.tsx",
+  input: "./src/index.ts",
   output: [
     {
       file: packageJson.main,
-      format: "cjs",
-      sourcemap: true,
-    },
-    {
-      file: packageJson.module,
       format: "esm",
       sourcemap: true,
     },
   ],
-  external: ["react", "react-proptypes"],
-  plugins: [peerDepsExternal(), css(), resolve(), commonjs(), typescript()],
+  external,
+  plugins: [
+    peerDepsExternal(),
+    resolve(),
+    commonjs(),
+    typescript({ useTsconfigDeclarationDir: true }),
+  ]
 };
