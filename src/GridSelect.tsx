@@ -1,82 +1,119 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { GridCell } from "./GridCell";
-import { createUseStyles } from 'react-jss';
+import { createUseStyles } from "react-jss";
+import clsx from "clsx";
+import { debounce } from "lodash";
 
-type RegionSelectionProperties = {
+export type RegionSelectionProps = {
   rows?: number;
   cols?: number;
-  gridGap?: number;
   onRegionUpdate: Function;
+  cellSize: number;
+  // onSelectionHover: Function; TODO: maybe
+  bounds: {
+    maxWidthBlock: {
+      width: number;
+      height: number;
+    };
+    maxHeightBlock: {
+      width: number;
+      height: number;
+    };
+  };
+  disabled?: boolean;
   classes?: {
     active?: any;
     hover?: any;
     cell?: any;
     grid?: any;
+    disabled?: any;
   };
+};
+
+type CoordsType = {
+  x: number;
+  y: number;
 };
 
 const useStyles = createUseStyles({
   grid: {
-    position: 'relative',
-    display: 'grid',
-    color: '#444',
-    margin: '24px 0 24px 0',
-  }
-})
+    position: "relative",
+    display: "grid",
+    color: "#444",
+    margin: "24px 0 24px 0",
+    gridGap: "2px 4px",
+  },
+  cell: {},
+});
 
 const GridSelect = ({
   onRegionUpdate,
-  rows = 1,
-  cols = 1,
-  gridGap = 5,
+  rows = 5,
+  cols = 5,
+  disabled = false,
+  cellSize = 24,
   classes,
-}: RegionSelectionProperties) => {
+}: RegionSelectionProps) => {
   const baseClasses = useStyles();
-
-  const [activeCell, setActiveCell] = useState<any>({
+  const [activeCell, setActiveCell] = useState<CoordsType>({
     x: 0,
     y: 0,
   });
-  const [hoverCell, setHoverCell] = useState<any>(null);
+  const [hoverCell, setHoverCell] = useState<CoordsType>(null);
 
+  // Whenever the active cell changes, call the user's function with the selected size
   useEffect(() => {
     onRegionUpdate({
-      width: activeCell.x,
-      height: activeCell.y,
+      width: activeCell.x + 1,
+      height: activeCell.y + 1,
     });
   }, [activeCell]);
 
   // grid setting
   const gridCss = {
-    gridTemplateColumns: Array(cols).fill("24px").join(" "),
-    gridGap: gridGap,
+    // TODO: / FIXME: how the fuck do we get this value?!?!??
+    gridTemplateColumns: Array(cols).fill(`${cellSize}px`).join(" "),
+  };
+
+  // TODO: see if this prevents rerenders
+  const onClick = useCallback(
+    ({x, y}) => setActiveCell({ x, y })
+  , []);
+
+  // debounce every 5ms so we dont lag with DOM updates
+  const onHover = useCallback(
+    debounce(({x, y}) => setHoverCell({ x, y }), 5)
+  , []);
+
+  const cells = [];
+  for (let x = 0; x < rows; x++) {
+    for (let y = 0; y < cols; y++) {
+      const isActive = x <= activeCell.x && y <= activeCell.y;
+      const isHover = hoverCell && x <= hoverCell.x && y <= hoverCell.y;
+      cells.push(
+        <GridCell
+          key={x + "-" + y}
+          onClick={onClick.bind(this, {x, y})}
+          onMouseEnter={onHover.bind(this, {x, y})}   
+          active={isActive}
+          hover={isHover}
+          disabled={disabled}
+          classes={classes}
+          cellSize={cellSize}
+        />
+      );
+    }
   }
 
   return (
-    <>
-      <div className={baseClasses.grid} style={gridCss} onMouseLeave={() => setHoverCell(null)}>
-        {Array(cols*rows)
-          .fill(0)
-          .map((item, index) => {
-            const coords = {
-              x: index % rows,
-              y: Math.floor(index / rows),
-            };
-            return (
-              <GridCell
-                coords={coords}
-                key={index}
-                onClick={() => setActiveCell(coords)}
-                onMouseEnter={() => setHoverCell(coords)}
-                activeCell={activeCell}
-                hoverCell={hoverCell}
-                classes={classes}
-              />
-            );
-          })}
-      </div>
-    </>
+    <div
+      className={clsx(baseClasses.grid, classes?.grid)}
+      style={gridCss}
+      onMouseLeave={() => setHoverCell(null)}
+    >
+      {cells}
+    </div>
   );
 };
 
