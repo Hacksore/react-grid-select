@@ -52,10 +52,10 @@ export default {
 
 const useStyles = createUseStyles({
   grid: {    
-    gridGap: props => `${props.gridGap}px ${props.gridGap + 2}px`
+    gridGap: (props: any) => `${props.gridGap}px ${props.gridGap + 2}px`
   },
   cell: {
-    background: props => props.backgroundColor,
+    background: (props: any) => props.backgroundColor,
   },
 });
 

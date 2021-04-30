@@ -1,6 +1,6 @@
 {
   "name": "react-grid-select",
-  "version": "0.0.1-alpha1",
+  "version": "0.0.1",
   "main": "./build/index.js",
   "module": "./build/index.es.js",
   "scripts": {

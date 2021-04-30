@@ -9,9 +9,8 @@ export type RegionSelectionProps = {
   rows?: number;
   cols?: number;
   onRegionUpdate: Function;
-  cellSize: number;
-  // onSelectionHover: Function; TODO: maybe
-  bounds: {
+  cellSize?: number;
+  bounds?: {
     maxWidthBlock: {
       width: number;
       height: number;
@@ -94,8 +93,8 @@ const GridSelect = ({
       cells.push(
         <GridCell
           key={x + "-" + y}
-          onClick={onClick.bind(this, {x, y})}
-          onMouseEnter={onHover.bind(this, {x, y})}   
+          onClick={onClick.bind(null, {x, y})}
+          onMouseEnter={onHover.bind(null, {x, y})}   
           active={isActive}
           hover={isHover}
           disabled={disabled}

@@ -6,8 +6,8 @@ import { createUseStyles } from "react-jss";
 // The base cell class is applied to every cell, the other classes are only applied when that condition is active
 const useStyles = createUseStyles({
   cell: {
-    width: props => props.cellSize,
-    height: props => props.cellSize,
+    width: (props: any) => props.cellSize,
+    height: (props: any) => props.cellSize,
     background: "#bababa",
     cursor: "pointer",
     borderRadius: 3,
