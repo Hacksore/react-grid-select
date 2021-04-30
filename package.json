@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "main": "./build/index.js",
   "module": "./build/index.es.js",
+  "author": "Hacksore",
+  "contributors": [
+		"Alex Oser <aoser9552@gmail.com> (https://github.com/alex-oser)"
+	],
   "scripts": {
     "dev": "rollup -c --watch",
     "build": "rollup -c",
