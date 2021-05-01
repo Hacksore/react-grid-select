@@ -21,7 +21,7 @@ export type RegionSelectionProps = {
     };
   };
   disabled?: boolean;
-  classes?: {
+  styles?: {
     active?: any;
     hover?: any;
     cell?: any;
@@ -40,7 +40,7 @@ const useStyles = createUseStyles({
     position: "relative",
     display: "grid",
     color: "#444",
-    margin: "24px 0 24px 0",
+    margin: "24px 0",
     gridGap: "2px 4px",
   },
   cell: {},
@@ -52,7 +52,7 @@ const GridSelect = ({
   cols = 5,
   disabled = false,
   cellSize = 24,
-  classes,
+  styles,
 }: RegionSelectionProps) => {
   const baseClasses = useStyles();
   const [activeCell, setActiveCell] = useState<CoordsType>({
@@ -93,12 +93,12 @@ const GridSelect = ({
       cells.push(
         <GridCell
           key={x + "-" + y}
-          onClick={onClick.bind(null, {x, y})}
+          onClick={() => setActiveCell({ x, y })}
           onMouseEnter={onHover.bind(null, {x, y})}   
           active={isActive}
           hover={isHover}
           disabled={disabled}
-          classes={classes}
+          styles={styles}
           cellSize={cellSize}
         />
       );
@@ -107,7 +107,7 @@ const GridSelect = ({
 
   return (
     <div
-      className={clsx(baseClasses.grid, classes?.grid)}
+      className={baseClasses.grid}
       style={gridCss}
       onMouseLeave={() => setHoverCell(null)}
     >

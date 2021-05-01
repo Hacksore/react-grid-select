@@ -1,9 +1,8 @@
 import { GridSelect, RegionSelectionProps } from "../GridSelect";
-import { createUseStyles } from 'react-jss';
 import { Story, Meta } from '@storybook/react';
 import React from "react";
 import { themes } from '@storybook/theming';
-import { useEffect, useState } from "@storybook/client-api";
+import { action } from '@storybook/addon-actions';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -11,17 +10,15 @@ export default {
   docs: {
     theme: themes.dark,
   },
+  parameters: { actions: { argTypesRegex: '^on.*' } },
   argTypes: {
-    onRegionUpdate: {
-      table: {
-        disable: true
-      }
-    },
     backgroundColor: {
       control: "color",
+      defaultValue: "#bababa",
     },
     activeColor: {
       control: "color",
+      defaultValue: "#4d6cdd",
     },
     gridGap: {
       defaultValue: 4,
@@ -50,26 +47,24 @@ export default {
   }
 } as Meta;
 
-const useStyles = createUseStyles({
+const getStyles = (props) => ({
   grid: {    
-    gridGap: (props: any) => `${props.gridGap}px ${props.gridGap + 2}px`
+    gridGap: `${props.gridGap}px ${props.gridGap + 2}px`
   },
   cell: {
-    background: (props: any) => props.backgroundColor,
+    background: props.backgroundColor,
+    border: `1px solid ${props.backgroundColor}`,
+  },
+  active: {
+    background: props.activeColor,
+    border: `1px solid ${props.activeColor}`,
   },
 });
 
 const Template: Story<RegionSelectionProps> = (args: any) => {
-  const classes = useStyles({
-    backgroundColor: args.backgroundColor,
-    activeColor: args.activeColor,
-    gridGap: args.gridGap,
-  });
-
   return (
-  
     <GridSelect 
-      classes={classes} 
+      styles={getStyles(args)}
       cellSize={args.cellSize}
       {...args} 
     />
@@ -79,7 +74,7 @@ const Template: Story<RegionSelectionProps> = (args: any) => {
 
 export const Example = Template.bind({});
 Example.args = {
-  onRegionUpdate: (bounds) => {},
+  onRegionUpdate: (bounds) => {action("yooo")},
   rows: 5,
   cols: 5,
   cellSize: 25,

@@ -3,66 +3,62 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import clsx from "clsx";
 import { createUseStyles } from "react-jss";
 
-// The base cell class is applied to every cell, the other classes are only applied when that condition is active
-const useStyles = createUseStyles({
-  cell: {
-    width: (props: any) => props.cellSize,
-    height: (props: any) => props.cellSize,
-    background: "#bababa",
-    cursor: "pointer",
-    borderRadius: 3,
-    border: "1px solid #bababa"
-  },
-  active: {
-    border: "1px solid #4d6cdd",
-    background: "#4d6cdd",
-  },
-  hover: {
-    border: "1px solid #fff"
-  },
-  disabled: {
-    filter: "brightness(0.7)",
-  },
-});
-
 type CellProperties = {
   active: boolean;
   hover: boolean;
   disabled: boolean;
-  classes: any;
   cellSize: number;
   onClick: MouseEventHandler<HTMLDivElement>;
   onMouseEnter: MouseEventHandler<HTMLDivElement>;
+  styles: any;
 };
 
-export const GridCell = React.memo(({
+export const GridCell = ({
   active,
   hover,
   disabled,
   onClick,
   onMouseEnter,
   cellSize,
-  classes,
+  styles,
 }: CellProperties) => {
-  const baseClasses = useStyles({
-    cellSize,
-  });
 
-  // console.log(`CELL RENDER`);
-
+  // Merge in custom styles
+  const baseStyles = {
+    cell: {
+      width: cellSize,
+      height: cellSize,
+      background: "#bababa",
+      cursor: "pointer",
+      borderRadius: 3,
+      border: "1px solid #bababa",
+      ...styles.cell,
+    },
+    active: {
+      border: "1px solid #4d6cdd",
+      background: "#4d6cdd",
+      ...styles.active,
+    },
+    hover: {
+      border: "1px solid #fff",
+      ...styles.hover,
+    },
+    disabled: {
+      filter: "brightness(0.7)",
+      ...styles.disabled,
+    },
+  };
+  
   return (
     <div
-      className={clsx(
-        baseClasses.cell, classes?.cell,
-        { [baseClasses.active]: active },
-        { [classes?.active]: active },
-        { [baseClasses.hover]: hover },
-        { [classes?.hover]: hover },
-        { [baseClasses.disabled]: !active && disabled },
-        { [classes?.disabled]: !active && disabled },
-      )}
+      style={{
+        ...baseStyles.cell, 
+        ...(active && baseStyles.active),
+        ...(hover && baseStyles.hover),
+        ...(!active && disabled && baseStyles.disabled),
+      }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
     />
   );
-});
+};
