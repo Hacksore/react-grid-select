@@ -7,11 +7,16 @@ import { action } from '@storybook/addon-actions';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   title: "Region Selection",
+  component: GridSelect,
   docs: {
     theme: themes.dark,
   },
-  parameters: { actions: { argTypesRegex: '^on.*' } },
   argTypes: {
+    onRegionUpdate: {
+      table: {
+        disable: true,
+      },
+    },
     backgroundColor: {
       control: "color",
       defaultValue: "#bababa",
@@ -65,26 +70,21 @@ const Template: Story<RegionSelectionProps> = (args: any) => {
   return (
     <GridSelect 
       styles={getStyles(args)}
-      cellSize={args.cellSize}
       {...args} 
     />
-  
   )
 };
 
 export const Example = Template.bind({});
 Example.args = {
-  onRegionUpdate: (bounds) => {action("yooo")},
+  onRegionUpdate: action("selectedArea"),
   rows: 5,
   cols: 5,
-  cellSize: 25,
-  disabled: false
 }
 
 export const LargeGrid = Template.bind({});
 LargeGrid.args = {
-  onRegionUpdate: (bounds) => {},
+  onRegionUpdate: action("selectedArea"),
   rows: 25,
   cols: 25,
-  disabled: false
 }

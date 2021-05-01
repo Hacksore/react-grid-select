@@ -75,15 +75,19 @@ const GridSelect = ({
     gridTemplateColumns: Array(cols).fill(`${cellSize}px`).join(" "),
   };
 
-  // TODO: see if this prevents rerenders
-  const onClick = useCallback(
-    ({x, y}) => setActiveCell({ x, y })
-  , []);
+  const onClick = ({x, y}) => {
+    if (disabled) {return null};
+    if (activeCell.x === x && activeCell.y === y) {return null};
+    setActiveCell({ x, y });
+  };
 
   // debounce every 5ms so we dont lag with DOM updates
   const onHover = useCallback(
-    debounce(({x, y}) => setHoverCell({ x, y }), 5)
-  , []);
+    debounce(({x, y}) => {
+      if (disabled) {return null};
+      setHoverCell({ x, y });
+    }, 5)
+  , [disabled]);
 
   const cells = [];
   for (let x = 0; x < rows; x++) {
@@ -93,7 +97,7 @@ const GridSelect = ({
       cells.push(
         <GridCell
           key={x + "-" + y}
-          onClick={() => setActiveCell({ x, y })}
+          onClick={() => onClick({x, y})}
           onMouseEnter={onHover.bind(null, {x, y})}   
           active={isActive}
           hover={isHover}
