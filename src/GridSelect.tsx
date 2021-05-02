@@ -35,15 +35,15 @@ type CoordsType = {
   y: number;
 };
 
-const useStyles = createUseStyles({
+const getBaseStyles = (cols, cellSize) => ({
   grid: {
     position: "relative",
     display: "grid",
     color: "#444",
     margin: "24px 0",
     gridGap: "2px 4px",
+    gridTemplateColumns: Array(cols).fill(`${cellSize}px`).join(" "),
   },
-  cell: {},
 });
 
 const GridSelect = ({
@@ -53,14 +53,14 @@ const GridSelect = ({
   disabled = false,
   cellSize = 24,
   styles,
+  bounds,
 }: RegionSelectionProps) => {
-  const baseClasses = useStyles();
   const [activeCell, setActiveCell] = useState<CoordsType>({
     x: 0,
     y: 0,
   });
   const [hoverCell, setHoverCell] = useState<CoordsType>(null);
-
+  
   // Whenever the active cell changes, call the user's function with the selected size
   useEffect(() => {
     onRegionUpdate({
@@ -69,39 +69,46 @@ const GridSelect = ({
     });
   }, [activeCell]);
 
-  // grid setting
-  const gridCss = {
-    // TODO: / FIXME: how the fuck do we get this value?!?!??
-    gridTemplateColumns: Array(cols).fill(`${cellSize}px`).join(" "),
-  };
-
-  const onClick = ({x, y}) => {
-    if (disabled) {return null};
+  const onClick = ({x, y, isCellDisabled}) => {
+    if (isCellDisabled) {return null};
     if (activeCell.x === x && activeCell.y === y) {return null};
     setActiveCell({ x, y });
   };
 
   // debounce every 5ms so we dont lag with DOM updates
   const onHover = useCallback(
-    debounce(({x, y}) => {
-      if (disabled) {return null};
+    debounce(({x, y, isCellDisabled}) => {
+      if (isCellDisabled) {
+        return setHoverCell(null);
+      };
       setHoverCell({ x, y });
     }, 5)
   , [disabled]);
 
   const cells = [];
-  for (let x = 0; x < rows; x++) {
-    for (let y = 0; y < cols; y++) {
+  for (let y = 0; y < cols; y++) {
+    for (let x = 0; x < cols; x++) {
       const isActive = x <= activeCell.x && y <= activeCell.y;
       const isHover = hoverCell && x <= hoverCell.x && y <= hoverCell.y;
+      // Check to make sure cell is not in the disabled area
+      const inBounds =
+        bounds && bounds.maxWidthBlock && bounds.maxHeightBlock
+          ? (bounds.maxWidthBlock &&
+              x <= bounds.maxWidthBlock.width - 1 &&
+              y <= bounds.maxWidthBlock.height - 1) ||
+            (bounds.maxHeightBlock &&
+              x <= bounds.maxHeightBlock.width - 1 &&
+              y <= bounds.maxHeightBlock.height - 1)
+          : true;
+      const isCellDisabled = disabled || !inBounds;
       cells.push(
         <GridCell
           key={x + "-" + y}
-          onClick={() => onClick({x, y})}
-          onMouseEnter={onHover.bind(null, {x, y})}   
+          onClick={() => onClick({x, y, isCellDisabled})}
+          onMouseEnter={onHover.bind(null, {x, y, isCellDisabled})}   
           active={isActive}
           hover={isHover}
-          disabled={disabled}
+          disabled={isCellDisabled}
           styles={styles}
           cellSize={cellSize}
         />
@@ -109,10 +116,13 @@ const GridSelect = ({
     }
   }
 
+  const baseStyles = getBaseStyles(cols, cellSize);
   return (
     <div
-      className={baseClasses.grid}
-      style={gridCss}
+      style={{
+        ...baseStyles.grid,
+        ...(styles && styles.grid ? styles.grid : {}),
+      }}
       onMouseLeave={() => setHoverCell(null)}
     >
       {cells}

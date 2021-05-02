@@ -49,6 +49,11 @@ export default {
         type: "range",
       }
     },
+    styles: {
+      table: {
+        disable: true,
+      },
+    },
   }
 } as Meta;
 
@@ -69,8 +74,8 @@ const getStyles = (props) => ({
 const Template: Story<RegionSelectionProps> = (args: any) => {
   return (
     <GridSelect 
-      styles={getStyles(args)}
-      {...args} 
+    {...args} 
+    styles={getStyles(args)}
     />
   )
 };
@@ -80,6 +85,16 @@ Example.args = {
   onRegionUpdate: action("selectedArea"),
   rows: 5,
   cols: 5,
+  bounds: {
+    maxWidthBlock: {
+      width: 5,
+      height: 2,
+    },
+    maxHeightBlock: {
+      width: 1,
+      height: 3,
+    }
+  }
 }
 
 export const LargeGrid = Template.bind({});
