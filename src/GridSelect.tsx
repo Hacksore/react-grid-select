@@ -40,18 +40,18 @@ const getBaseStyles = (cols, cellSize) => ({
     position: "relative",
     display: "grid",
     color: "#444",
-    margin: "24px 0",
-    gridGap: "2px 4px",
+    margin: "25px 0",
+    gridGap: "4px 6px",
     gridTemplateColumns: Array(cols).fill(`${cellSize}px`).join(" "),
   },
 });
 
-const GridSelect = ({
+export const GridSelect = ({
   onRegionUpdate,
   rows = 5,
   cols = 5,
   disabled = false,
-  cellSize = 24,
+  cellSize = 25,
   styles,
   bounds,
 }: RegionSelectionProps) => {
@@ -87,7 +87,7 @@ const GridSelect = ({
 
   const cells = [];
   for (let y = 0; y < cols; y++) {
-    for (let x = 0; x < cols; x++) {
+    for (let x = 0; x < rows; x++) {
       const isActive = x <= activeCell.x && y <= activeCell.y;
       const isHover = hoverCell && x <= hoverCell.x && y <= hoverCell.y;
       // Check to make sure cell is not in the disabled area
@@ -129,5 +129,3 @@ const GridSelect = ({
     </div>
   );
 };
-
-export { GridSelect };

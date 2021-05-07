@@ -4,15 +4,40 @@ import React from "react";
 import { themes } from "@storybook/theming";
 import { action } from "@storybook/addon-actions";
 
+const defaults = {
+  styles : {
+    gridGap: 4,
+    backgroundColor: "#bababa",
+    activeColor: "#4d6cdd",
+  },
+  cellSize: 25,
+}
+
+const getStyles = (props) => {
+  const { activeColor, backgroundColor, gridGap } = props;
+  if (!activeColor || !backgroundColor || !gridGap) return null;
+  return ({
+    grid: {
+      gridGap: `${props.gridGap}px ${props.gridGap + 2}px`,
+    },
+    cell: {
+      background: props.backgroundColor,
+      border: `1px solid ${props.backgroundColor}`,
+    },
+    active: {
+      background: props.activeColor,
+      border: `1px solid ${props.activeColor}`,
+    },
+  })
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   title: "Region Selection",
   component: GridSelect,
-  docs: {
-    theme: themes.dark,
-  },
   argTypes: {
     onRegionUpdate: {
+      action: "selectedArea",
       table: {
         disable: true,
       },
@@ -50,6 +75,7 @@ export default {
       },
     },
     styles: {
+      defaultValue: getStyles(defaults.styles),
       table: {
         disable: true,
       },
@@ -57,27 +83,16 @@ export default {
   },
 } as Meta;
 
-const getStyles = (props) => ({
-  grid: {
-    gridGap: `${props.gridGap}px ${props.gridGap + 2}px`,
-  },
-  cell: {
-    background: props.backgroundColor,
-    border: `1px solid ${props.backgroundColor}`,
-  },
-  active: {
-    background: props.activeColor,
-    border: `1px solid ${props.activeColor}`,
-  },
-});
-
 const Template: Story<RegionSelectionProps> = (args: any) => {
-  return <GridSelect {...args} styles={getStyles(args)} />;
+  const { activeColor, backgroundColor, gridGap, ...rest } = args;
+  return <GridSelect {...rest} styles={getStyles({ activeColor, backgroundColor, gridGap })} />;
 };
 
-export const Example = Template.bind({});
-Example.args = {
-  onRegionUpdate: action("selectedArea"),
+export const BasicExample = Template.bind({});
+// BasicExample.parameters = { controls: { include: ["cols", "rows", "onRegionUpdate" ] } }
+
+export const BoundsExample = Template.bind({});
+BoundsExample.args = {
   rows: 5,
   cols: 5,
   bounds: {
