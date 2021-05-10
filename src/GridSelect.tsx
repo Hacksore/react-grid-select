@@ -1,8 +1,6 @@
 import React from "react";
 import { useEffect, useState, useCallback } from "react";
 import { GridCell } from "./GridCell";
-import { createUseStyles } from "react-jss";
-import clsx from "clsx";
 import { debounce } from "lodash";
 
 export type RegionSelectionProps = {
