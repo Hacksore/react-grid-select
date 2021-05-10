@@ -1,7 +1,5 @@
-import React, { CSSProperties } from "react";
-import { MouseEventHandler, useEffect, useState } from "react";
-import clsx from "clsx";
-import { createUseStyles } from "react-jss";
+import React from "react";
+import { MouseEventHandler } from "react";
 
 type CellProperties = {
   active: boolean;
