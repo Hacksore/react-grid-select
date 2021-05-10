@@ -11,6 +11,7 @@ type CellProperties = {
   onClick: MouseEventHandler<HTMLDivElement>;
   onMouseEnter: MouseEventHandler<HTMLDivElement>;
   styles: any;
+  id: string;
 };
 
 const getBaseStyles = (cellSize) => ({
@@ -42,6 +43,7 @@ export const GridCell = ({
   onMouseEnter,
   cellSize,
   styles,
+  id,
 }: CellProperties) => {
 
   const getMergedStyle = (styleClass) => ({
@@ -59,6 +61,7 @@ export const GridCell = ({
   
   return (
     <div
+      id={id}
       style={{
         ...cellStyles.cell, 
         ...(active && cellStyles.active),

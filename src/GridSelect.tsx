@@ -69,6 +69,7 @@ export const GridSelect = ({
     });
   }, [activeCell]);
 
+  
   const onClick = ({x, y, isCellDisabled}) => {
     if (isCellDisabled) {return null};
     if (activeCell.x === x && activeCell.y === y) {return null};
@@ -86,8 +87,8 @@ export const GridSelect = ({
   , [disabled]);
 
   const cells = [];
-  for (let y = 0; y < cols; y++) {
-    for (let x = 0; x < rows; x++) {
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
       const isActive = x <= activeCell.x && y <= activeCell.y;
       const isHover = hoverCell && x <= hoverCell.x && y <= hoverCell.y;
       // Check to make sure cell is not in the disabled area
@@ -103,6 +104,7 @@ export const GridSelect = ({
       const isCellDisabled = disabled || !inBounds;
       cells.push(
         <GridCell
+          id={x + "-" + y}
           key={x + "-" + y}
           onClick={() => onClick({x, y, isCellDisabled})}
           onMouseEnter={onHover.bind(null, {x, y, isCellDisabled})}   
