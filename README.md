@@ -4,6 +4,8 @@ A React component to select a grid size from an available space
 
 [![version][version-badge]][package] [![Monthly downloads][npmstats-badge]][npmstats] ![gzip size][gzip-badge] [![All Contributors](https://img.shields.io/badge/all_contributors-20-green.svg?style=flat-square)](#contributors) [![Build Status][build-badge]][build-page] [![MIT License][license-badge]][license] [![PRs Welcome][prs-badge]][prs]
 
+## Example
+![Example](preview.gif)
 ## Demo
 
 Check out the examples:
@@ -23,6 +25,7 @@ or
 ```shell
 npm install react-grid-select
 ```
+
 
 ## Basic usage
 
