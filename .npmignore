@@ -1,0 +1,10 @@
+.github/
+.storybook/
+public/
+__tests__/
+src/
+tsconfig.json
+preview.gif
+.editorconfig
+.prettierrc
+rollup.config.js
