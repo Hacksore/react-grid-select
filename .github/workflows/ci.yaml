@@ -16,6 +16,7 @@ jobs:
       - name: test
         run: |
           npm ci
+          npm run build
           npm run test
   publish:
     runs-on: ubuntu-latest
