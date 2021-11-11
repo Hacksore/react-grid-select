@@ -2,7 +2,7 @@
 
 A React component to select a grid size from an available space
 
-[![version][version-badge]][package] [![Monthly downloads][npmstats-badge]][npmstats] ![gzip size][gzip-badge] [![All Contributors](https://img.shields.io/badge/all_contributors-20-green.svg?style=flat-square)](#contributors) [![Build Status][build-badge]][build-page] [![MIT License][license-badge]][license] [![PRs Welcome][prs-badge]][prs]
+[![version][version-badge]][package] [![Monthly downloads][npmstats-badge]][npmstats] [![Build Status][build-badge]][build-page] [![MIT License][license-badge]][license] [![PRs Welcome][prs-badge]][prs]
 
 ## Example
 ![Example](preview.gif)
@@ -85,5 +85,5 @@ All default styles can be overridden by using the styles prop which accepts the 
 [license]: https://github.com/ricardo-ch/react-grid-select/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
-[build-badge]: https://circleci.com/gh/ricardo-ch/react-grid-select/tree/master.svg?style=svg
-[build-page]: https://circleci.com/gh/ricardo-ch/react-grid-select/tree/master
+[build-page]: https://github.com/Hacksore/drone-mobile/actions?query=workflow%3ANPM
+[build-badge]: https://img.shields.io/github/workflow/status/Hacksore/react-grid-select/NPM
