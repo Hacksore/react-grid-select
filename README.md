@@ -30,7 +30,7 @@ npm install react-grid-select
 ## Basic usage
 
 ```js
-import GridSelect from "react-grid-select";
+import { GridSelect } from "react-grid-select";
 
 const Demo = () => {
   const [selectedArea, setSelectedArea] = useState({ width: null, height: null });
