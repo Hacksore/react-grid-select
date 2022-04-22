@@ -102,8 +102,8 @@ export const GridSelect = ({
       const isCellDisabled = disabled || !inBounds;
       cells.push(
         <GridCell
-          id={x + "-" + y}
-          key={x + "-" + y}
+          id={`cell-${x}-${y}`}
+          key={`cell-${x}-${y}`}
           onClick={() => onClick({x, y, isCellDisabled})}
           onMouseEnter={onHover.bind(null, {x, y, isCellDisabled})}   
           active={isActive}
