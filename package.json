@@ -4,6 +4,10 @@
   "main": "./build/index.js",
   "module": "./build/index.es.js",
   "author": "Hacksore",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hacksore/react-grid-select.git"
+  },
   "contributors": [
     "Alex Oser <aoser9552@gmail.com> (https://github.com/alex-oser)"
   ],
