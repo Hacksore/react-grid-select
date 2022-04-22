@@ -85,5 +85,5 @@ All default styles can be overridden by using the styles prop which accepts the 
 [license]: https://github.com/ricardo-ch/react-grid-select/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
-[build-page]: https://github.com/Hacksore/drone-mobile/actions?query=workflow%3ANPM
+[build-page]: https://github.com/Hacksore/react-grid-select/actions?query=workflow%3ANPM
 [build-badge]: https://img.shields.io/github/workflow/status/Hacksore/react-grid-select/NPM
