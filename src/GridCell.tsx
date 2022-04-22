@@ -66,6 +66,7 @@ export const GridCell = ({
         ...(hover && cellStyles.hover),
         ...(!active && disabled && cellStyles.disabled),
       }}
+      role="gridcell"
       onClick={onClick}
       onMouseEnter={onMouseEnter}
     />

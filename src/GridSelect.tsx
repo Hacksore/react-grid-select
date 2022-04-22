@@ -123,6 +123,7 @@ export const GridSelect = ({
         ...baseStyles.grid,
         ...(styles && styles.grid ? styles.grid : {}),
       }}
+      role={"grid"}
       onMouseLeave={() => setHoverCell(null)}
     >
       {cells}

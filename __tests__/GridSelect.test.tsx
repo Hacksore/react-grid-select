@@ -1,7 +1,7 @@
 import React from "react";
 
 import { GridSelect } from "../src/GridSelect";
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 test("renders without explosions 💥", async () => {
@@ -9,17 +9,17 @@ test("renders without explosions 💥", async () => {
 });
 
 test("5x5 grid renders", async () => {
-  const result = render(
+  render(
     <GridSelect onRegionUpdate={() => {}} cols={5} rows={5} />
   );
 
-  // test if the last cell is rendered
-  const ele = result.container.querySelector("#cell-4-4");
-  expect(ele).toBeInTheDocument();
+  const grid = screen.getByRole("grid");
+  const cells = within(grid).getAllByRole("gridcell");
+  expect(cells.length).toBe(25);
 });
 
 test("click last cell & background color updates", async () => {
-  const result = render(
+  render(
     <GridSelect
       onRegionUpdate={() => {}}
       styles={{ active: { background: "#4d6cdd" } }}
@@ -28,11 +28,13 @@ test("click last cell & background color updates", async () => {
     />
   );
 
-  const ele = result.container.querySelector("#cell-4-4");
+  const grid = screen.getByRole("grid");
+  const cells = within(grid).getAllByRole("gridcell");
+  expect(cells.length).toBe(25);
 
+  const lastCell = cells[cells.length - 1];
   // click the last cell
-  fireEvent.click(ele);
-
+  fireEvent.click(lastCell);
   // ensure that background color matches what was passed in
-  expect(ele).toHaveStyle("background: #4d6cdd");
+  expect(lastCell).toHaveStyle("background: #4d6cdd");
 });
