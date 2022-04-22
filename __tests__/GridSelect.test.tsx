@@ -18,7 +18,7 @@ test("5x5 grid renders", async () => {
   expect(cells.length).toBe(25);
 });
 
-test("click last cell & background color updates", async () => {
+test("click last cell & aria-checked updates", async () => {
   render(
     <GridSelect
       onRegionUpdate={() => {}}
@@ -30,13 +30,14 @@ test("click last cell & background color updates", async () => {
 
   const grid = screen.getByRole("grid");
   const cells = within(grid).getAllByRole("gridcell");
-  expect(cells.length).toBe(25);
 
   const lastCell = cells[cells.length - 1];
-  // click the last cell
+  // Before clicking the last cell, it should not be checked
+  expect(lastCell.getAttribute("aria-checked")).toBe("false");
+
   fireEvent.click(lastCell);
-  // ensure that background color matches what was passed in
-  expect(lastCell).toHaveStyle("background: #4d6cdd");
+  // After clicking, the cell should indicate it is active
+  expect(lastCell.getAttribute("aria-checked")).toBe("true");
 });
 
 
@@ -46,7 +47,9 @@ test("clicking cell fires correct onRegionUpdate", async () => {
     <GridSelect onRegionUpdate={onClick} cols={5} rows={5} />
   );
 
-  const firstCell = result.container.querySelector("#cell-0-0");
+  const grid = screen.getByRole("grid");
+  const cells = within(grid).getAllByRole("gridcell");
+  const firstCell = cells[0];
   fireEvent.click(firstCell);
 
   expect(onClick).toHaveBeenCalledWith({
@@ -54,7 +57,7 @@ test("clicking cell fires correct onRegionUpdate", async () => {
     height: 1,
   });
 
-  const lastCell = result.container.querySelector("#cell-4-4");
+  const lastCell = cells[cells.length - 1];
   fireEvent.click(lastCell);
 
   expect(onClick).toHaveBeenCalledWith({
